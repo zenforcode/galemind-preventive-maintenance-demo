@@ -1,0 +1,16 @@
+[project]
+name = "preventivedata"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "fastparquet>=2024.11.0",
+    "pandas>=2.2.3",
+    "pyarrow>=20.0.0",
+    "ruff>=0.11.10",
+    "torch>=2.7.0",
+    "torchvision>=0.22.0",
+    "tqdm>=4.67.1",
+    "typer>=0.15.3",
+]
