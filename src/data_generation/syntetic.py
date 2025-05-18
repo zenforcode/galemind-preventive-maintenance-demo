@@ -17,8 +17,9 @@ thresholds = {
     "val4": 529,
     "val5": 3,
     "val6": 4,
-    "val7": 70.0
+    "val7": 70.0,
 }
+
 
 def generate_row(timestamp, machine_id, failure):
     if failure:
@@ -44,31 +45,49 @@ def generate_row(timestamp, machine_id, failure):
         timestamp.strftime("%Y-%m-%d %H:%M:%S"),
         machine_id,
         failure,
-        val1, val2, val3, val4, field7, val5, val6, val7
+        val1,
+        val2,
+        val3,
+        val4,
+        field7,
+        val5,
+        val6,
+        val7,
     ]
+
 
 def write_csv_for_device(day_dir, device_prefix, machine_id, day_start):
     failure_indices = set(random.sample(range(records_per_day), k=random.randint(2, 6)))
     file_path = os.path.join(day_dir, f"{device_prefix}.csv")
 
-    with open(file_path, "w", newline='') as f:
+    with open(file_path, "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow([
-            "timestamp", "machine_id", "failure",
-            "val1", "val2", "val3", "val4", "field7",
-            "val5", "val6", "val7"
-        ])
+        writer.writerow(
+            [
+                "timestamp",
+                "machine_id",
+                "failure",
+                "val1",
+                "val2",
+                "val3",
+                "val4",
+                "field7",
+                "val5",
+                "val6",
+                "val7",
+            ]
+        )
         for i in range(records_per_day):
             timestamp = day_start + i * measurement_interval
             failure = 1 if i in failure_indices else 0
             row = generate_row(timestamp, machine_id, failure)
             writer.writerow(row)
 
-def main():
 
-    os.makedirs("./data",exist_ok=True)
+def main():
+    os.makedirs("./data", exist_ok=True)
     os.chdir("./data")
-    
+
     current_date = start_date
     machine_counter = 1
 
@@ -85,6 +104,7 @@ def main():
 
         print(f"{day_str} - CSVs written")
         current_date += timedelta(days=1)
+
 
 if __name__ == "__main__":
     main()
