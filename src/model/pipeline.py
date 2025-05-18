@@ -1,8 +1,14 @@
-# ---------------------------
-# Metaflow Pipeline
-# ---------------------------
-class PredictiveMaintenanceFlow(FlowSpec):
+import pandas as pd
+import numpy as np
+import torch
+import torch.nn as nn
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
+from metaflow import FlowSpec, step, Parameter, card
+from model.predictive_model import LSTMModel
 
+
+class PredictiveMaintenanceFlow(FlowSpec):
     data_path = Parameter("data_path", default="sensor_data.csv")
     seq_len = Parameter("seq_len", default=20)
     epochs = Parameter("epochs", default=10)
@@ -20,8 +26,17 @@ class PredictiveMaintenanceFlow(FlowSpec):
         self.df.sort_values(by=["machine_id", "timestamp"], inplace=True)
         self.df["machine_id"] = self.df["machine_id"].astype("category").cat.codes
 
-        features = ['machine_id', 'val1', 'val2', 'val3', 'val4', 'val5', 'val6', 'val7']
-        target = 'failure'
+        features = [
+            "machine_id",
+            "val1",
+            "val2",
+            "val3",
+            "val4",
+            "val5",
+            "val6",
+            "val7",
+        ]
+        target = "failure"
 
         scaler = MinMaxScaler()
         self.df[features] = scaler.fit_transform(self.df[features])
@@ -29,13 +44,15 @@ class PredictiveMaintenanceFlow(FlowSpec):
         def create_sequences(data, labels, seq_length):
             Xs, ys = [], []
             for i in range(len(data) - seq_length):
-                Xs.append(data[i:i+seq_length])
-                ys.append(labels[i+seq_length])
+                Xs.append(data[i : i + seq_length])
+                ys.append(labels[i + seq_length])
             return np.array(Xs), np.array(ys)
 
         self.X_all, self.y_all = [], []
         for _, group in self.df.groupby("machine_id"):
-            X_seq, y_seq = create_sequences(group[features].values, group[target].values, self.seq_len)
+            X_seq, y_seq = create_sequences(
+                group[features].values, group[target].values, self.seq_len
+            )
             self.X_all.append(X_seq)
             self.y_all.append(y_seq)
 
@@ -43,7 +60,8 @@ class PredictiveMaintenanceFlow(FlowSpec):
         y = np.concatenate(self.y_all)
 
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(
-            X, y, test_size=0.2, random_state=42)
+            X, y, test_size=0.2, random_state=42
+        )
 
         self.X_train = torch.tensor(self.X_train, dtype=torch.float32)
         self.X_test = torch.tensor(self.X_test, dtype=torch.float32)
@@ -67,7 +85,7 @@ class PredictiveMaintenanceFlow(FlowSpec):
             loss = self.loss_fn(pred, self.y_train)
             loss.backward()
             self.optimizer.step()
-            print(f"Epoch {epoch+1}/{self.epochs}, Loss: {loss.item():.4f}")
+            print(f"Epoch {epoch + 1}/{self.epochs}, Loss: {loss.item():.4f}")
 
         self.next(self.evaluate)
 
@@ -85,7 +103,8 @@ class PredictiveMaintenanceFlow(FlowSpec):
 
     @step
     def end(self):
-        print(f"🎯 Final Accuracy: {self.accuracy:.2f}")
+        print(f"Final Accuracy: {self.accuracy:.2f}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     PredictiveMaintenanceFlow()

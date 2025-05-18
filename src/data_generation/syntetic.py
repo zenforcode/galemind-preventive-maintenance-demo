@@ -21,7 +21,7 @@ thresholds = {
 }
 
 
-def generate_row(timestamp, machine_id, failure):
+def _generate_row(timestamp, machine_id, failure):
     if failure:
         val1 = random.randint(thresholds["val1"] + 1, 250_000_000)
         val2 = random.randint(thresholds["val2"] + 1, 10000)
@@ -56,7 +56,7 @@ def generate_row(timestamp, machine_id, failure):
     ]
 
 
-def write_csv_for_device(day_dir, device_prefix, machine_id, day_start):
+def _write_csv_for_device(day_dir, device_prefix, machine_id, day_start):
     failure_indices = set(random.sample(range(records_per_day), k=random.randint(2, 6)))
     file_path = os.path.join(day_dir, f"{device_prefix}.csv")
 
@@ -80,31 +80,25 @@ def write_csv_for_device(day_dir, device_prefix, machine_id, day_start):
         for i in range(records_per_day):
             timestamp = day_start + i * measurement_interval
             failure = 1 if i in failure_indices else 0
-            row = generate_row(timestamp, machine_id, failure)
+            row = _generate_row(timestamp, machine_id, failure)
             writer.writerow(row)
 
 
-def main():
-    os.makedirs("./data", exist_ok=True)
-    os.chdir("./data")
-
+def generate_data(path: str):
+    os.makedirs(path, exist_ok=True)
+    cwd = os.getcwd()
+    os.chdir(path)
     current_date = start_date
     machine_counter = 1
-
     while current_date <= end_date:
         day_str = current_date.strftime("%Y-%m-%d")
         day_dir = day_str
         os.makedirs(day_dir, exist_ok=True)
         day_start = datetime(current_date.year, current_date.month, current_date.day)
-
         for prefix in device_prefixes:
             machine_id = f"{prefix}{machine_counter:04d}"
-            write_csv_for_device(day_dir, prefix, machine_id, day_start)
+            _write_csv_for_device(day_dir, prefix, machine_id, day_start)
             machine_counter += 1
-
         print(f"{day_str} - CSVs written")
         current_date += timedelta(days=1)
-
-
-if __name__ == "__main__":
-    main()
+        os.chdir(cwd)
