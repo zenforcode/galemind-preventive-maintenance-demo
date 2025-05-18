@@ -12,8 +12,7 @@ def train(epochs: int = 5, batch_size: int = 64, lr: float = 0.001):
     """
     Train a CNN model on the MNIST dataset.
     """
-    PredictiveMaintenanceFlow()
-
+    print("Hello")
 
 @app.command()
 def generate_data(path: str):
