@@ -4,9 +4,9 @@
 This repository showcases a demo implementation of preventive maintenance workflows using Galemind and Triton Inference Server.
 ## Overview
 Preventive maintenance (PM) is essential for minimizing equipment downtime, reducing costs, and ensuring operational reliability. This demo illustrates how Galemind can be leveraged to:
-    - Trigger preventive maintenance actions based on predefined rules or thresholds.
-    - Use an LSTM-based machine learning model to predict potential equipment failures.
-    - Serve models using NVIDIA Triton Inference Server for scalable, production-ready inference.
+1. Trigger preventive maintenance actions based on predefined rules or thresholds.
+2. Use an LSTM-based machine learning model to predict potential equipment failures.
+3. Serve models using NVIDIA Triton Inference Server for scalable, production-ready inference.
 
 ##  Project Structure
 ```bash
