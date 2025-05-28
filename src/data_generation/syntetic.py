@@ -84,7 +84,7 @@ def _write_csv_for_device(day_dir, device_prefix, machine_id, day_start):
             writer.writerow(row)
 
 
-def generate_data(path: str):
+def generate_syn_data(path: str):
     os.makedirs(path, exist_ok=True)
     cwd = os.getcwd()
     os.chdir(path)
