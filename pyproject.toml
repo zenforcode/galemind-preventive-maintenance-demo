@@ -21,7 +21,7 @@ dependencies = [
 ]
 
 [project.scripts]
-train = "cli.main:app"
+train="cli.main:app"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

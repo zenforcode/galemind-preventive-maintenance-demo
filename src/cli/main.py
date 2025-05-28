@@ -7,7 +7,7 @@ app = typer.Typer()
 
 
 @app.command()
-def train(epochs: int = 5, batch_size: int = 64, lr: float = 0.001):
+def print(csv_path: str):
     """
     """
     print("Hello")
