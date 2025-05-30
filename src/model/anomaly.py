@@ -3,7 +3,7 @@ import pandas as pd
 from prophet import Prophet
 import matplotlib.pyplot as plt
 from pydantic import BaseModel
-from datatime import datetime
+from datetime import datetime
 class SensorData(BaseModel):
     timestamp: datetime
     machine_id: str
@@ -17,7 +17,7 @@ class SensorData(BaseModel):
     val6: int
     val7: float
 
-records = [SensorData(**item) for item in data]
+#records = [SensorData(**item) for item in data]
 
 def detect_anomalies(data: List[SensorData]):
     # Load your da
