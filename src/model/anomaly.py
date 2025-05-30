@@ -20,9 +20,11 @@ class SensorData(BaseModel):
 #records = [SensorData(**item) for item in data]
 
 def detect_anomalies(data: List[SensorData]):
-    # Load your da
-    records = [SensorData(**item) for item in data]
-    df = pd.DataFrame([r.dict() for r in records])
+    """
+    Detects anomalies in the 'val1' time series using Prophet.
+    Returns a DataFrame of anomalies with timestamps and values.
+    """
+    df = pd.DataFrame([r.dict() for r in data])
     df_prophet = df[['timestamp', 'val1']].rename(columns={'timestamp': 'ds', 'val1': 'y'})
     model = Prophet()
     model.fit(df_prophet)
@@ -35,4 +37,5 @@ def detect_anomalies(data: List[SensorData]):
     # Flag anomalies
     df_merged['anomaly'] = (df_merged['y'] < df_merged['yhat_lower']) | (df_merged['y'] > df_merged['yhat_upper'])
     anomalies = df_merged[df_merged['anomaly'] == True]
+    return anomalies
 

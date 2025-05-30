@@ -3,7 +3,7 @@ from typing import Final
 import typer
 from src.data_generation.syntetic import generate_syn_data
 import pandas as pd
-from src.model.anomaly import SensorData
+from src.model.anomaly import SensorData, detect_anomalies
 from datetime import datetime
 import os
 
@@ -69,6 +69,25 @@ def parse_sensor_data(csv_path: str = "2020-03-19/S1.csv"):
             sensor_data_list.append(sensor)
     print(f"Parsed {len(sensor_data_list)} SensorData records from {csv_path}")
     return sensor_data_list
+
+@app.command("detect-anomaly")
+def detect_anomaly(csv_path: str = "2020-03-19/S1.csv"):
+    """
+    Runs anomaly detection on the specified CSV file using Prophet.
+    Prints the detected anomalies (timestamp and value).
+    """
+    # Parse the CSV into SensorData objects
+    sensor_data_list = parse_sensor_data(csv_path)
+    if not sensor_data_list:
+        print("No sensor data found or failed to parse CSV.")
+        return
+    # Run anomaly detection
+    anomalies = detect_anomalies(sensor_data_list)
+    if anomalies.empty:
+        print("No anomalies detected.")
+    else:
+        print("Anomalies detected:")
+        print(anomalies[['ds', 'y', 'yhat', 'yhat_lower', 'yhat_upper']])
 
 if __name__ == "__main__":
     app()
