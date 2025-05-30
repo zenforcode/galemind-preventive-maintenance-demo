@@ -1,0 +1,5 @@
+FROM nvcr.io/nvidia/tritonserver:24.01-py3
+
+# Install all required Python packages globally for all models
+RUN pip install --upgrade pip && \
+    pip install pandas prophet pydantic matplotlib 
