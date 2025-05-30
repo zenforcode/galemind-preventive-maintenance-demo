@@ -1,4 +1,4 @@
-# Anomaly Detection Models for NVIDIA Triton
+# Galemind
 
 This directory contains the model repositories for the anomaly detection models designed to be served using NVIDIA Triton Inference Server with a Python backend.
 
@@ -88,12 +88,6 @@ Anomaly Status for all data points:
 ```
 
 Each row shows the timestamp, the original `val1` value, and whether the model detected an `anomaly` (`True` or `False`).
-
-## Further Steps
-
-*   Adapt `test_triton.py` to test the `anomaly_detector_numpy` model.
-*   Integrate the Triton client into your main application.
-*   Explore other Triton features like model ensembles, scheduling, and monitoring.
 
 
 
