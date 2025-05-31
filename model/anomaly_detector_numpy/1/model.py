@@ -1,6 +1,6 @@
 import numpy as np
 import triton_python_backend_utils as pb_utils
-from src.model.anomaly import SensorData, detect_anomalies
+from anomaly import SensorData, detect_anomalies
 
 class TritonPythonModel:
     def initialize(self, args):

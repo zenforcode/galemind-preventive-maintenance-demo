@@ -42,7 +42,20 @@ def generate(path: str):
     generate_syn_data(path=path)
 
 @app.command()
-def parse_sensor_data(csv_path: str = "2020-03-19/S1.csv"):
+def parse_sensor_data(
+    csv_path: str = "2020-03-19/S1.csv",
+    timestamp_key: str = "timestamp",
+    machine_id_key: str = "machine_id",
+    failure_key: str = "failure",
+    val1_key: str = "val1",
+    val2_key: str = "val2",
+    val3_key: str = "val3",
+    val4_key: str = "val4",
+    field7_key: str = "field7",
+    val5_key: str = "val5",
+    val6_key: str = "val6",
+    val7_key: str = "val7",
+):
     """
     Reads the specified CSV file, parses each row into a SensorData object,
     and prints the number of records. This prepares the data for anomaly detection.
@@ -54,17 +67,17 @@ def parse_sensor_data(csv_path: str = "2020-03-19/S1.csv"):
         for row in reader:
             # Convert types as required by SensorData
             sensor = SensorData(
-                timestamp=datetime.strptime(row["timestamp"], "%Y-%m-%d %H:%M:%S"),
-                machine_id=row["machine_id"],
-                failure=int(row["failure"]),
-                val1=int(row["val1"]),
-                val2=int(row["val2"]),
-                val3=int(row["val3"]),
-                val4=int(row["val4"]),
-                field7=int(row["field7"]),
-                val5=int(row["val5"]),
-                val6=int(row["val6"]),
-                val7=float(row["val7"]),
+                timestamp=datetime.strptime(row[timestamp_key], "%Y-%m-%d %H:%M:%S"),
+                machine_id=row[machine_id_key],
+                failure=int(row[failure_key]),
+                val1=int(row[val1_key]),
+                val2=int(row[val2_key]),
+                val3=int(row[val3_key]),
+                val4=int(row[val4_key]),
+                field7=int(row[field7_key]),
+                val5=int(row[val5_key]),
+                val6=int(row[val6_key]),
+                val7=float(row[val7_key]),
             )
             sensor_data_list.append(sensor)
     print(f"Parsed {len(sensor_data_list)} SensorData records from {csv_path}")

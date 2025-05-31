@@ -172,3 +172,9 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Ignore src directories copied into Triton model folders
+model/anomaly_detector_json/1/src/
+model/anomaly_detector_numpy/1/src/
+model/anomaly_detector_numpy/1/anomaly.py
+model/anomaly_detector_json/1/anomaly.py
