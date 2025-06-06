@@ -90,4 +90,9 @@ Anomaly Status for all data points:
 Each row shows the timestamp, the original `val1` value, and whether the model detected an `anomaly` (`True` or `False`).
 
 
+#command
+#docker-compose -f docker-compose.cpu.yml up
+#python tests/test_triton.py
+
+
 

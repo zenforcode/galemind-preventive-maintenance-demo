@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  triton:
+    image: triton-custom:latest
+    volumes:
+      - ./model:/models
+    command: tritonserver --model-repository=/models
+    ports:
+      - "8000:8000"  # gRPC
+      - "8001:8001"  # HTTP
+      - "8002:8002"  # Metrics 

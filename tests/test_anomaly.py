@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from anomaly import SensorData, detect_anomalies
+from src.model.anomaly import SensorData, detect_anomalies
 from datetime import datetime, timedelta
 
 class TestAnomalyDetection(unittest.TestCase):
