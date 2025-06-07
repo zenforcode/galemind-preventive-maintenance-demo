@@ -43,3 +43,6 @@ The server will be accessible at:
 - HTTP: http://localhost:8001/v2/models/machine/infer
 - gRPC: localhost:8000
 
+To run the test, go to tests
+python test_anomaly.py
+
