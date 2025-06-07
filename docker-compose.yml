@@ -1,12 +1,12 @@
 version: "3.8"
 services:
   triton:
-    image: nvcr.io/nvidia/tritonserver:24.03-py3  # Match with installed driver version
+    image: nvcr.io/nvidia/tritonserver:24.03-py3  # Match with installed driver version #triton-custom:latest
     runtime: nvidia
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
     volumes:
-      - ./models:/models
+      - ./model:/models
     command: tritonserver --model-repository=/models
     ports:
       - "8000:8000"  # gRPC
